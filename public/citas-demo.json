@@ -1,0 +1,10 @@
+[
+  { "id": "demo-01", "nombreCliente": "Ana Gómez", "servicioId": 1, "nombreServicio": "Corte clásico", "fechaCita": "2026-10-05T09:00", "estado": "pendiente", "asistencia": "sin_registrar" },
+  { "id": "demo-02", "nombreCliente": "Carlos Ruiz", "servicioId": 2, "nombreServicio": "Corte y barba", "fechaCita": "2026-10-05T10:20", "estado": "confirmada", "asistencia": "sin_registrar" },
+  { "id": "demo-03", "nombreCliente": "Laura Méndez", "servicioId": 3, "nombreServicio": "Arreglo de barba", "fechaCita": "2026-10-05T11:40", "estado": "pendiente", "asistencia": "sin_registrar" },
+  { "id": "demo-04", "nombreCliente": "Mateo Torres", "servicioId": 1, "nombreServicio": "Corte clásico", "fechaCita": "2026-10-06T09:40", "estado": "confirmada", "asistencia": "sin_registrar" },
+  { "id": "demo-05", "nombreCliente": "Sofía Herrera", "servicioId": 2, "nombreServicio": "Corte y barba", "fechaCita": "2026-10-06T11:00", "estado": "pendiente", "asistencia": "sin_registrar" },
+  { "id": "demo-06", "nombreCliente": "Daniel Castro", "servicioId": 3, "nombreServicio": "Arreglo de barba", "fechaCita": "2026-10-06T14:00", "estado": "pendiente", "asistencia": "sin_registrar" },
+  { "id": "demo-07", "nombreCliente": "Valentina Rojas", "servicioId": 1, "nombreServicio": "Corte clásico", "fechaCita": "2026-10-07T10:20", "estado": "confirmada", "asistencia": "sin_registrar" },
+  { "id": "demo-08", "nombreCliente": "Andrés López", "servicioId": 2, "nombreServicio": "Corte y barba", "fechaCita": "2026-10-07T15:20", "estado": "pendiente", "asistencia": "sin_registrar" }
+]
