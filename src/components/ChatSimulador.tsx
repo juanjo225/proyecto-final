@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { buscarSiguienteTurno, fechaEsValidaYFutura, minutosDeHora, obtenerTurnosDelDia, type Turno } from "../services/horarios";
+import { buscarSiguienteTurno, fechaEsValidaYFutura, horaFormato12, minutosDeHora, obtenerTurnosDelDia, type Turno } from "../services/horarios";
 import type { Cita } from "../types/Cita";
 import type { Servicio } from "../types/Servicio";
 
@@ -34,13 +34,14 @@ export function ChatSimulador({ servicios, citas, onCrearCita }: Props) {
     setServicioElegido(null);
     setFechaElegida("");
     setTurnoPropuesto(null);
-    return `Listo, ${nombreCliente}. Tu cita de ${servicio.nombre} quedó para el ${turno.fecha} a las ${turno.hora}. Está pendiente de confirmación.`;
+    return `Listo, ${nombreCliente}. Tu cita de ${servicio.nombre} quedó para el ${turno.fecha} a las ${horaFormato12(turno.hora)}. Está pendiente de confirmación.`;
   }
 
   function responder(mensaje: string): string {
     const consulta = mensaje.trim().toLocaleLowerCase("es");
 
     if (paso === "nombre") {
+      if (mensaje.trim().split(/\s+/).length < 2) return "Por favor, escribe tu nombre y apellido.";
       setNombreCliente(mensaje.trim());
       setPaso("servicio");
       return `Gracias, ${mensaje.trim()}. ¿Qué servicio quieres? ${servicios.map((servicio) => servicio.nombre).join(", ")}.`;
@@ -60,12 +61,12 @@ export function ChatSimulador({ servicios, citas, onCrearCita }: Props) {
       }
       setFechaElegida(mensaje.trim());
       setPaso("hora");
-      return "¿A qué hora deseas el turno? Los horarios son de 09:00 a 13:00 y de 14:00 a 21:00. Los turnos comienzan cada 40 minutos. Escribe HH:MM, por ejemplo 09:00.";
+      return "¿A qué hora deseas el turno? Atendemos de 9:00 a. m. a 1:00 p. m. y de 2:00 p. m. a 9:00 p. m. Los turnos comienzan cada 40 minutos. Escribe la hora con a. m. o p. m., por ejemplo 9:00 a. m.";
     }
 
     if (paso === "hora") {
       const minutosSolicitados = minutosDeHora(mensaje);
-      if (minutosSolicitados === null) return "No reconocí la hora. Escríbela en formato de 24 horas, por ejemplo 09:00 o 14:40.";
+      if (minutosSolicitados === null) return "No reconocí la hora. Escríbela con a. m. o p. m., por ejemplo 9:00 a. m. o 2:40 p. m.";
       const horaNormalizada = `${String(Math.floor(minutosSolicitados / 60)).padStart(2, "0")}:${String(minutosSolicitados % 60).padStart(2, "0")}`;
       const turno = buscarSiguienteTurno(fechaElegida, minutosSolicitados, citas);
       if (!turno) {
@@ -80,7 +81,7 @@ export function ChatSimulador({ servicios, citas, onCrearCita }: Props) {
 
       setTurnoPropuesto(turno);
       setPaso("confirmacion");
-      return `Ese horario no está libre. El siguiente turno disponible es el ${turno.fecha} a las ${turno.hora}. ¿Deseas que lo reserve? Responde sí o no.`;
+      return `Ese horario no está libre. El siguiente turno disponible es el ${turno.fecha} a las ${horaFormato12(turno.hora)}. ¿Deseas que lo reserve? Responde sí o no.`;
     }
 
     if (paso === "confirmacion") {
@@ -99,7 +100,7 @@ export function ChatSimulador({ servicios, citas, onCrearCita }: Props) {
     if (consulta.includes("cita") || consulta.includes("agendar") || consulta.includes("turno")) {
       if (servicios.length === 0) return "En este momento no tengo el catálogo disponible. Inténtalo de nuevo cuando carguen los servicios.";
       setPaso("nombre");
-      return "Claro. ¿Cuál es tu nombre?";
+      return "Claro. ¿Cuál es tu nombre y apellido?";
     }
 
     if (consulta.includes("servicio") || consulta.includes("precio") || consulta.includes("corte")) {
@@ -142,3 +143,5 @@ export function ChatSimulador({ servicios, citas, onCrearCita }: Props) {
     </section>
   );
 }
+
+

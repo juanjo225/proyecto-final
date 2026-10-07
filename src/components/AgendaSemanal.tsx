@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Cita, EstadoAsistencia } from "../types/Cita";
+import { horaFormato12 } from "../services/horarios";
 
 type Props = {
   citas: Cita[];
@@ -28,7 +29,7 @@ function obtenerDiasSemana(desplazamiento: number): Date[] {
 }
 
 function mostrarHora(fecha: string): string {
-  return new Intl.DateTimeFormat("es-CO", { hour: "2-digit", minute: "2-digit" }).format(new Date(fecha));
+  return horaFormato12(fecha.slice(11, 16));
 }
 
 export function AgendaSemanal({ citas, onCambiarEstado, onCambiarAsistencia, onCancelar }: Props) {

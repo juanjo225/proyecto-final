@@ -21,6 +21,14 @@ function horaTexto(minutos: number): string {
   return `${hora}:${minuto}`;
 }
 
+export function horaFormato12(hora24: string): string {
+  const minutos = minutosDeHora(hora24);
+  if (minutos === null) return hora24;
+  const horas = Math.floor(minutos / 60);
+  const sufijo = horas < 12 ? "a. m." : "p. m.";
+  return `${horas % 12 || 12}:${String(minutos % 60).padStart(2, "0")} ${sufijo}`;
+}
+
 export function obtenerTurnosDelDia(fecha: string): Turno[] {
   const dia = fechaLocal(fecha);
   if (!dia || dia.getDay() === 0) return [];
@@ -75,10 +83,12 @@ export function fechaEsValidaYFutura(fecha: string): boolean {
 }
 
 export function minutosDeHora(hora: string): number | null {
-  const partes = /^(\d{1,2}):(\d{2})$/.exec(hora.trim());
+  const partes = /^(\d{1,2}):(\d{2})(?:\s*([ap])\.?\s*m\.?)?$/i.exec(hora.trim());
   if (!partes) return null;
   const horas = Number(partes[1]);
   const minutos = Number(partes[2]);
-  if (horas > 23 || minutos > 59) return null;
-  return horas * 60 + minutos;
+  const periodo = partes[3]?.toLocaleLowerCase();
+  if (minutos > 59 || (periodo && (horas < 1 || horas > 12)) || (!periodo && horas > 23)) return null;
+  const hora24 = periodo ? (horas % 12) + (periodo === "p" ? 12 : 0) : horas;
+  return hora24 * 60 + minutos;
 }
